@@ -322,6 +322,13 @@ static struct ctl_table kern_table[] = {
 #endif
 #ifdef CONFIG_SCHED_DEBUG
 	{
+		.procname	= "sched_child_runs_first",
+		.data		= &sysctl_sched_child_runs_first,
+		.maxlen		= sizeof(unsigned int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec,
+	},	
+	{
 		.procname	= "sched_cpu_schedtune_bias",
 		.data		= &sysctl_sched_cpu_schedtune_bias,
 		.maxlen		= sizeof(unsigned int),
