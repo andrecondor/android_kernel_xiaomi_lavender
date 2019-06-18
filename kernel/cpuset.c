@@ -1792,17 +1792,23 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 		{ "system-background",	"0-3" },
 		{ "top-app",		"0-7" },
 	};
+	struct c_data c_targets[8] = {
+		/* Silver only cpusets go first */
+		{ "background",			"0-1"},
+		{ "restricted",			"0-3"},
+		{ "system-background", 		"0-3"},
+		{ "system", 			"0-1,6-7"},
+		{ "audio-app",			"0-3,6-7"},
+		{ "camera-daemon",		"0-3,6-7"},
+		{ "foreground",			"0-3"},
+		{ "top-app",			"0-7"}};
 
-	struct cpuset *cs = css_cs(of_css(of));
-	int i;
-
-	if (task_is_booster(current)) {
-		for (i = 0; i < ARRAY_SIZE(cs_targets); i++) {
-			struct cs_target tgt = cs_targets[i];
-
-			if (!strcmp(cs->css.cgroup->kn->name, tgt.name))
-				return cpuset_write_resmask_assist(of, tgt,
-								   nbytes, off);
+	if (!strcmp(current->comm, "init")) {
+		for (i = 0; i < ARRAY_SIZE(c_targets); i++) {
+			if (!strcmp(cs->css.cgroup->kn->name, c_targets[i].c_name)) {
+				strcpy(buf, c_targets[i].c_cpus);
+				break;
+			}
 		}
 	}
 #endif
