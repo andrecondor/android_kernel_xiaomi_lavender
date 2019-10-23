@@ -1772,6 +1772,17 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 					 char *buf, size_t nbytes, loff_t off)
 {
 #ifdef CONFIG_CPUSETS_ASSIST
+	static struct cs_target cs_targets[] = {
+		{ "audio-app",		"0-3,6-7" },
+		{ "background",		"0-1" },
+		{ "camera-daemon",	"0-3,6-7" },
+		{ "foreground",		"0-3,6-7" },
+		{ "restricted",		"0-3" },
+		{ "system-background",	"0-3" },
+		{ "top-app",		"0-7" },
+	};
+
+	struct cpuset *cs = css_cs(of_css(of));
 	int i;
 	struct cpuset *cs = css_cs(of_css(of));
 	struct c_data {
