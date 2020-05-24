@@ -244,7 +244,7 @@
 				qcom,pause-lo = <500>;
 				qcom,pause-hi = <500>;
 				qcom,lut-flags = <31>; /* loop, ramp up, reverse, pause hi, pause lo */
-				qcom,use-blink;
+>>>>>>> 24688fb19b1c... dts: drivers/leds: new white led impl				qcom,use-blink;
 			};
 
 			green_led: qcom,rgb_1 {
